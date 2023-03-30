@@ -85,7 +85,7 @@ class AnsibleGitInventory(object):
         # Read inventory file.
         with open(inventory, 'r') as f:
             # Parse YAML.
-            data = yaml.load(f)
+            data = yaml.load(f, Loader=yaml.FullLoader)
 
             # Prepare result dict.
             result = {
@@ -98,7 +98,7 @@ class AnsibleGitInventory(object):
             }
 
             # Loop through inventory YAML and build result yaml.
-            for tier, group in data.iteritems():
+            for tier, group in data.items():
 
                 # Build group name for inv-tier.
                 inv_tier = '{0}-{1}'.format(name, tier)
@@ -114,7 +114,7 @@ class AnsibleGitInventory(object):
                 # Add tier to inv group.
                 result[name]['children'].append(tier)
 
-                for loc, hosts in group.iteritems():
+                for loc, hosts in group.items():
 
                     # Build group names for tier-loc, inv-loc and inv-tier-loc.
                     tier_loc     = '{0}-{1}'.format(tier, loc)
@@ -210,7 +210,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
         sys.exit(0)
 
-    except Exception, e:
+    except Exception as e:
         sys.stderr.write(str(e) + '\n')
         sys.stderr.flush()
         sys.exit(1)
